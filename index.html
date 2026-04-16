@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <title>The Bogey Golf Society — UAE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -374,210 +375,29 @@
   <section id="events">
     <div class="events-inner">
       <div>
-        <p class="section-label reveal">The Schedule</p>
-        <h2 class="display reveal reveal-delay-1">BGS Annual <em>Calendar</em></h2>
-
-        <style>
-          .cal-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            margin-top: 2rem;
-          }
-          .cal-item {
-            background: var(--white);
-            border: 1px solid var(--sand);
-            padding: 0.85rem 1rem;
-            transition: border-color 0.2s;
-          }
-          .cal-item:hover { border-color: var(--turf); }
-          .cal-item-date {
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--turf);
-            margin-bottom: 0.3rem;
-          }
-          .cal-item-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--forest);
-            line-height: 1.2;
-            margin-bottom: 0.2rem;
-          }
-          .cal-item-venue {
-            font-size: 0.72rem;
-            font-weight: 300;
-            color: var(--mid);
-          }
-          .cal-item-tag {
-            display: inline-block;
-            margin-top: 0.4rem;
-            font-size: 0.55rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            padding: 0.15rem 0.5rem;
-            border: 1px solid var(--sand);
-            color: var(--mid);
-          }
-          .cal-item-tag.tour { border-color: var(--turf); color: var(--turf); }
-          .cal-item-tag.social { border-color: var(--gold); color: var(--gold); }
-          .cal-item-tag.league { border-color: var(--forest); color: var(--forest); }
-          @media (max-width: 900px) {
-            .cal-grid { grid-template-columns: repeat(2, 1fr); }
-          }
-          @media (max-width: 500px) {
-            .cal-grid { grid-template-columns: 1fr; }
-          }
-        </style>
-
-        <div class="cal-grid">
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Sep 12 – Dec 14, 2025</div>
-            <div class="cal-item-title">BGS Baghdad League 2025</div>
-            <div class="cal-item-tag league">League</div>
+        <p class="section-label reveal">On the Card</p>
+        <h2 class="display reveal reveal-delay-1">Upcoming <em>fixtures</em></h2>
+        <div class="events-list">
+          <div class="event-row reveal">
+            <div><div class="event-date-num">16</div><div class="event-date-mo">May</div></div>
+            <div class="event-info"><h4>Türkiye Tour 2026</h4><p>Antalya · 4-day tournament, three formats</p><span class="event-tag tour">International Tour</span></div>
           </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Sep 21, 2025</div>
-            <div class="cal-item-title">BGS Season Opener</div>
-            <div class="cal-item-venue">The Els Club</div>
-            <div class="cal-item-tag">Round</div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">07</div><div class="event-date-mo">Jun</div></div>
+            <div class="event-info"><h4>Monthly Medal — Emirates GC</h4><p>The Majlis, Dubai · Stroke play · 07:30</p><span class="event-tag">Monthly Medal</span></div>
           </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Sep 27, 2025</div>
-            <div class="cal-item-title">Ryder Cup Party</div>
-            <div class="cal-item-venue">Rajiv's house</div>
-            <div class="cal-item-tag social">Social</div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">05</div><div class="event-date-mo">Jul</div></div>
+            <div class="event-info"><h4>Summer Stableford — Yas Links</h4><p>Abu Dhabi · Early tee times from 06:00</p><span class="event-tag">Monthly Round</span></div>
           </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Oct 11, 2025</div>
-            <div class="cal-item-title">BGS Runchey in the Ranches</div>
-            <div class="cal-item-venue">Arabian Ranches GC</div>
-            <div class="cal-item-tag">Round</div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">02</div><div class="event-date-mo">Aug</div></div>
+            <div class="event-info"><h4>Twilight Round — Dubai Hills</h4><p>Fourball format · Tee off 17:00</p><span class="event-tag">Monthly Round</span></div>
           </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Oct 21, 2025</div>
-            <div class="cal-item-title">BGS Pro Clinic</div>
-            <div class="cal-item-tag social">Social</div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">TBC</div><div class="event-date-mo">Oct</div></div>
+            <div class="event-info"><h4>BGS Open 2026</h4><p>Annual open — venue TBC · All members eligible</p><span class="event-tag tour">Open Event</span></div>
           </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Nov 1–2, 2025</div>
-            <div class="cal-item-title">BGS Mini-Tour</div>
-            <div class="cal-item-venue">Al Hamra &amp; Al Zorah</div>
-            <div class="cal-item-tag tour">Tour</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Nov 15, 2025</div>
-            <div class="cal-item-title">DP World Tour Championship</div>
-            <div class="cal-item-venue">Jumeirah Golf Estates</div>
-            <div class="cal-item-tag social">Social</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Nov 29, 2025</div>
-            <div class="cal-item-title">BGS World Cup</div>
-            <div class="cal-item-venue">Dubai Hills Golf Club</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Dec 7, 2025</div>
-            <div class="cal-item-title">Baghdad League Golf Day</div>
-            <div class="cal-item-venue">Montgomerie Golf Club</div>
-            <div class="cal-item-tag league">League</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Dec 10, 2025</div>
-            <div class="cal-item-title">Christmas Dinner &amp; Baghdad Presentation</div>
-            <div class="cal-item-tag social">Social</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Jan 10, 2026</div>
-            <div class="cal-item-title">BGS Balls of Fire</div>
-            <div class="cal-item-venue">Fire Course, JGE</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Jan 17, 2026</div>
-            <div class="cal-item-title">Dubai Desert Classic Day Out</div>
-            <div class="cal-item-venue">Emirates Golf Club</div>
-            <div class="cal-item-tag social">Social</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Jan 30 – Apr 26, 2026</div>
-            <div class="cal-item-title">BGS Stableford League 2026</div>
-            <div class="cal-item-tag league">League</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Feb 7, 2026</div>
-            <div class="cal-item-title">BGS Swamp Shoot-out</div>
-            <div class="cal-item-venue">Al Zorah</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Feb 18, 2026</div>
-            <div class="cal-item-title">Equipment Spotlight</div>
-            <div class="cal-item-tag social">Social</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Mar 4, 2026</div>
-            <div class="cal-item-title">BGS Better in the Dark</div>
-            <div class="cal-item-venue">Faldo Course, evening</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Mar 21, 2026</div>
-            <div class="cal-item-title">BGS Take the Capital</div>
-            <div class="cal-item-venue">Abu Dhabi Golf Club</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Apr 10, 2026</div>
-            <div class="cal-item-title">Augusta Masters Watching</div>
-            <div class="cal-item-venue">Emirates GC, Spike Bar</div>
-            <div class="cal-item-tag social">Social</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">Apr 18, 2026</div>
-            <div class="cal-item-title">BGS Last Chance Scramble</div>
-            <div class="cal-item-venue">The Track Meydan</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal">
-            <div class="cal-item-date">May 2–3, 2026</div>
-            <div class="cal-item-title">BGS Birthday Bogies &amp; Beverages</div>
-            <div class="cal-item-venue">Els Club</div>
-            <div class="cal-item-tag">Round</div>
-          </div>
-
-          <div class="cal-item reveal" style="border-color: var(--turf); background: var(--forest);">
-            <div class="cal-item-date" style="color: var(--lime);">May 16–20, 2026</div>
-            <div class="cal-item-title" style="color: white;">Season Finale &amp; BGS Tour 2026</div>
-            <div class="cal-item-venue" style="color: rgba(255,255,255,0.6);">Türkiye</div>
-            <div class="cal-item-tag tour" style="border-color: var(--lime); color: var(--lime);">International Tour</div>
-          </div>
-
         </div>
 
         <div style="margin-top:3rem;" class="reveal">
@@ -591,13 +411,11 @@
               <div class="select-wrap">
                 <select id="ev-select" name="event" class="form-field" required>
                   <option value="" disabled selected>Select an event</option>
-                  <option>BGS Balls of Fire — Jan 10</option>
-                  <option>BGS Swamp Shoot-out — Feb 7</option>
-                  <option>BGS Better in the Dark — Mar 4</option>
-                  <option>BGS Take the Capital — Mar 21</option>
-                  <option>BGS Last Chance Scramble — Apr 18</option>
-                  <option>BGS Birthday Bogies &amp; Beverages — May 2/3</option>
-                  <option>Season Finale &amp; BGS Tour 2026 — May 16</option>
+                  <option>Türkiye Tour 2026 — 16 May</option>
+                  <option>Monthly Medal — Emirates GC — 7 Jun</option>
+                  <option>Summer Stableford — Yas Links — 5 Jul</option>
+                  <option>Twilight Round — Dubai Hills — 2 Aug</option>
+                  <option>BGS Open 2026 — Oct TBC</option>
                 </select>
               </div>
             </div>
