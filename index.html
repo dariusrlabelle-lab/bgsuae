@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bogey Golf Society — UAE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:       #0e1a0f;
+      --forest:    #1c3a1e;
+      --green:     #2e5e32;
+      --turf:      #4a8c50;
+      --lime:      #8fc44a;
+      --cream:     #f4f0e6;
+      --parchment: #ede7d3;
+      --sand:      #d4c9a8;
+      --white:     #ffffff;
+      --gold:      #c9a84c;
+      --mid:       #7a7060;
+    }
+
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { font-family: 'Barlow', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; cursor: none; }
+
+    .cursor { position: fixed; width: 10px; height: 10px; background: var(--turf); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width 0.2s, height 0.2s; mix-blend-mode: multiply; }
+    .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid var(--turf); border-radius: 50%; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: all 0.15s ease; mix-blend-mode: multiply; }
+
+    .grain { position: fixed; inset: 0; z-index: 9990; pointer-events: none; opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 128px; }
+
+    /* ── NAV ── */
+    #nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500; display: flex; align-items: center; justify-content: space-between; padding: 1.4rem 3.5rem; transition: all 0.4s ease; }
+    #nav.solid { background: rgba(14,26,15,0.96); backdrop-filter: blur(16px); padding: 0.9rem 3.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-logo { display: flex; align-items: center; text-decoration: none; }
+    .nav-logo img { height: 175px; width: auto; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.75); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--lime); }
+    .nav-cta { border: 1px solid rgba(255,255,255,0.4); padding: 0.5rem 1.4rem; color: white !important; }
+    .nav-cta:hover { background: var(--turf) !important; border-color: var(--turf) !important; }
+
+    /* ── HELPERS ── */
+    .section-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--turf); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--turf); }
+    h2.display { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 700; line-height: 1.1; color: var(--forest); }
+    h2.display em { font-style: italic; font-weight: 400; color: var(--turf); }
+    h2.display.light { color: var(--cream); }
+    h2.display.light em { color: var(--lime); }
+    .body-text { font-size: 1.05rem; font-weight: 300; line-height: 1.8; color: #5a5040; }
+
+    /* ── PARALLAX ── */
+    .parallax-section { position: relative; overflow: hidden; }
+    .parallax-bg { position: absolute; inset: -20%; background-size: cover; background-position: center; will-change: transform; }
+
+    /* ── HERO ── */
+    #hero { height: 100vh; min-height: 640px; display: flex; align-items: center; justify-content: center; }
+    #hero .parallax-bg {
+      background-image: url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&q=85');
+      filter: brightness(0.38) saturate(1.1);
+    }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 2rem; max-width: 860px; }
+    .hero-pretitle { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.8rem; opacity: 0; animation: riseUp 0.9s ease 0.2s forwards; }
+
+    /* Hero heading — uses text, no logo image */
+    .hero-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 900;
+      line-height: 1;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      opacity: 0;
+      animation: riseUp 1s ease 0.4s forwards;
+    }
+    .hero-sub-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.05em;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: riseUp 0.9s ease 0.6s forwards;
+    }
+    .hero-tagline-small {
+      font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.1em;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: riseUp 0.9s ease 0.8s forwards;
+    }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; opacity: 0; animation: riseUp 0.8s ease 1s forwards; }
+    .btn { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding: 0.95rem 2.2rem; transition: all 0.25s; display: inline-block; }
+    .btn-green { background: var(--turf); color: white; }
+    .btn-green:hover { background: var(--lime); color: var(--ink); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,0.4); color: white; }
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: white; }
+    .scroll-cue { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.3); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; animation: riseUp 1s ease 1.2s both; }
+    .scroll-cue-line { width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent); animation: scrollDrop 2s ease-in-out infinite; }
+
+    /* ── MANIFESTO ── */
+    #manifesto { background: var(--cream); padding: 5rem 4rem; }
+    .manifesto-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 3rem; align-items: center; }
+    .manifesto-left .big-number { font-family: 'Playfair Display', serif; font-size: 10rem; font-weight: 900; color: var(--parchment); line-height: 1; user-select: none; }
+    .manifesto-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.2rem,2vw,1.7rem); font-weight: 400; font-style: italic; line-height: 1.5; color: var(--forest); border-left: 3px solid var(--turf); padding-left: 1.5rem; margin-bottom: 1.4rem; }
+    .manifesto-body { font-size: 0.98rem; font-weight: 300; line-height: 1.85; color: #5a5040; }
+
+    /* ── PARALLAX DIVIDERS ── */
+    .parallax-divider { height: 55vh; min-height: 400px; }
+
+    /* divider 1 — "The Philosophy" — use img_logo_black (image 1) */
+    #divider-1 .parallax-bg {
+      background-image: url('img_logo_black.png');
+      background-position: center center;
+      filter: brightness(0.28) saturate(0.8);
+    }
+
+    /* divider 2 — "Annual Tours" — Thailand group on water hole (image 6) */
+    #divider-2 .parallax-bg {
+      background-image: url('img_thailand_group.jpg');
+      filter: brightness(0.30) saturate(1.1);
+    }
+
+    /* divider 3 — "Membership" — van of golfers (image 4) */
+    #divider-3 .parallax-bg {
+      background-image: url('img_van.png');
+      filter: brightness(0.25) saturate(0.9);
+    }
+
+    .parallax-divider-content { position: relative; z-index: 2; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+    .divider-quote { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,4vw,3.5rem); font-weight: 700; font-style: italic; color: white; line-height: 1.2; max-width: 700px; }
+    .divider-quote em { display: block; font-style: normal; font-weight: 300; font-size: 0.45em; letter-spacing: 0.2em; text-transform: uppercase; color: var(--lime); margin-bottom: 1rem; }
+
+    /* ── STATS ── */
+    #stats { background: var(--forest); padding: 5rem 4rem; }
+    .stats-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); }
+    .stat-item { text-align: center; padding: 2rem 1rem; border-right: 1px solid rgba(255,255,255,0.07); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; color: var(--lime); line-height: 1; margin-bottom: 0.4rem; }
+    .stat-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+
+    /* ── EVENTS ── */
+    #events { background: var(--cream); padding: 8rem 4rem; }
+    .events-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem; align-items: start; }
+    .events-list { margin-top: 3rem; }
+    .event-row { display: grid; grid-template-columns: 64px 1fr; gap: 1.5rem; align-items: start; padding: 1.6rem 0; border-top: 1px solid var(--sand); transition: all 0.2s; }
+    .event-row:last-child { border-bottom: 1px solid var(--sand); }
+    .event-row:hover { padding-left: 0.5rem; }
+    .event-date-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--forest); line-height: 1; }
+    .event-date-mo { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--turf); }
+    .event-info h4 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--forest); margin-bottom: 0.25rem; }
+    .event-info p { font-size: 0.83rem; font-weight: 300; color: var(--mid); line-height: 1.5; }
+    .event-tag { display: inline-block; margin-top: 0.4rem; font-size: 0.58rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.18rem 0.6rem; border: 1px solid var(--sand); color: var(--mid); }
+    .event-tag.tour { border-color: var(--turf); color: var(--turf); }
+
+    .calendar-block { background: var(--parchment); border: 1px solid var(--sand); overflow: hidden; }
+    .calendar-block .cal-header { padding: 1.2rem 1.5rem; background: var(--forest); display: flex; align-items: center; gap: 0.8rem; }
+    .cal-header span { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .cal-header-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+    .calendar-block iframe { width: 100%; height: 480px; border: none; display: block; }
+    .cal-placeholder { height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; color: var(--mid); text-align: center; padding: 2rem; }
+    .cal-placeholder .cal-icon { font-size: 2rem; opacity: 0.35; }
+    .cal-placeholder p { font-size: 0.82rem; line-height: 1.6; max-width: 300px; }
+    .cal-placeholder code { font-size: 0.72rem; background: var(--sand); padding: 0.2rem 0.5rem; display: block; margin-top: 0.3rem; }
+
+    /* ── TOURS ── */
+    #tours { background: var(--ink); padding: 8rem 4rem; }
+    .tours-header { max-width: 1100px; margin: 0 auto 4rem; }
+    .tours-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 0.6rem; }
+
+    .tour-card { position: relative; overflow: hidden; background: #111; }
+    /* Only cards with popups get pointer cursor */
+    .tour-card.clickable { cursor: pointer; }
+    .tour-card.no-click { cursor: default; }
+
+    .tour-card img { width: 100%; height: 360px; object-fit: cover; display: block; transition: transform 0.7s ease, filter 0.4s; filter: brightness(0.55) saturate(0.9); }
+    .tour-card.clickable:hover img { transform: scale(1.06); filter: brightness(0.4) saturate(1.1); }
+
+    .tour-card-info { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.05) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.4rem; }
+    .tour-year-tag { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--lime); margin-bottom: 0.3rem; }
+    .tour-card-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; color: white; line-height: 1.1; margin-bottom: 0.2rem; }
+    .tour-card-sub { font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.6); line-height: 1.4; }
+
+    /* The action label at bottom of each card */
+    .tour-action {
+      display: inline-block; margin-top: 0.7rem;
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.32rem 0.8rem;
+      transition: all 0.2s;
+    }
+    /* Clickable cards get a bordered button style */
+    .tour-card.clickable .tour-action { color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.25); }
+    .tour-card.clickable:hover .tour-action { color: white; border-color: white; }
+    /* Non-clickable cards get a solid pill badge */
+    .tour-card.no-click .tour-action { color: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.15); letter-spacing: 0.12em; }
+
+    /* ── TOUR MODAL ── */
+    .tour-modal { display: none; position: fixed; inset: 0; z-index: 600; background: rgba(0,0,0,0.88); backdrop-filter: blur(12px); align-items: center; justify-content: center; padding: 2rem; }
+    .tour-modal.open { display: flex; }
+    .modal-box { background: var(--cream); max-width: 860px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative; animation: modalIn 0.35s ease; }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
+    .modal-close-btn { position: absolute; top: 1rem; right: 1rem; background: var(--forest); color: white; border: none; width: 34px; height: 34px; font-size: 0.9rem; cursor: pointer; z-index: 10; transition: background 0.2s; }
+    .modal-close-btn:hover { background: var(--turf); }
+    .modal-img { width: 100%; height: 300px; object-fit: cover; filter: brightness(0.8); display: block; }
+    .modal-content { padding: 2.5rem 3rem; }
+    .modal-meta { display: flex; gap: 2.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .meta-lbl { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--turf); margin-bottom: 0.2rem; }
+    .meta-val { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--forest); }
+    .modal-content h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--forest); margin-bottom: 1rem; line-height: 1.1; }
+    .modal-content h2 em { font-style: italic; font-weight: 400; color: var(--turf); }
+    .modal-content p { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: #5a5040; margin-bottom: 1rem; }
+    .modal-gallery { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.4rem; margin-top: 1.5rem; }
+    .modal-gallery img { width: 100%; aspect-ratio: 4/3; object-fit: cover; filter: brightness(0.88); display: block; }
+
+    /* ── JOIN ── */
+    #join { background: var(--parchment); padding: 8rem 4rem; }
+    .join-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+    .join-perks { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.4rem; }
+    .perk { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .perk-icon { width: 38px; height: 38px; flex-shrink: 0; background: var(--forest); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .perk h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--forest); margin-bottom: 0.15rem; }
+    .perk p { font-size: 0.82rem; font-weight: 300; color: var(--mid); line-height: 1.5; }
+    .join-form-wrap { padding-top: 0.5rem; }
+    .form-group { margin-bottom: 1.3rem; }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-lbl { display: block; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--forest); margin-bottom: 0.45rem; }
+    .form-field { width: 100%; padding: 0.85rem 1rem; font-family: 'Barlow', sans-serif; font-size: 0.9rem; font-weight: 300; background: var(--white); border: 1px solid var(--sand); color: var(--ink); outline: none; transition: border-color 0.2s; }
+    .form-field:focus { border-color: var(--turf); }
+    textarea.form-field { resize: vertical; min-height: 90px; }
+    select.form-field { appearance: none; }
+    .select-wrap { position: relative; }
+    .select-wrap::after { content: '↓'; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: var(--mid); pointer-events: none; font-size: 0.8rem; }
+    .form-check { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 0.8rem; font-weight: 300; color: var(--mid); line-height: 1.5; margin-bottom: 1.5rem; }
+    .form-check input { margin-top: 3px; accent-color: var(--turf); }
+    .btn-submit-main { width: 100%; background: var(--forest); color: white; padding: 1.1rem; border: none; cursor: pointer; font-family: 'Barlow', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; transition: background 0.25s; }
+    .btn-submit-main:hover { background: var(--turf); }
+    .form-note { font-size: 0.75rem; color: var(--mid); text-align: center; margin-top: 0.8rem; line-height: 1.6; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--ink); padding: 3.5rem 4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
+    .footer-logo { height: 44px; width: auto; display: block; }
+    footer p { font-size: 0.72rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.25); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--lime); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes riseUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollDrop { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+      #nav { padding: 1rem 1.5rem; }
+      #nav.solid { padding: 0.8rem 1.5rem; }
+      .nav-links { display: none; }
+      #manifesto { padding: 4rem 1.5rem; }
+      .manifesto-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .manifesto-left .big-number { font-size: 6rem; }
+      #events { padding: 5rem 1.5rem; }
+      .events-inner { grid-template-columns: 1fr; gap: 3rem; }
+      #tours { padding: 5rem 1.5rem; }
+      .tours-grid { grid-template-columns: repeat(2,1fr); }
+      .tour-card img { height: 240px; }
+      #stats { padding: 4rem 1.5rem; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      #join { padding: 5rem 1.5rem; }
+      .join-inner { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; text-align: center; padding: 2.5rem 1.5rem; }
+      .modal-content { padding: 1.5rem; }
+      .modal-gallery { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grain"></div>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- ── NAV — PNG logo, white inverted ── -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">
+      <img src="BGS_UAE.svg" alt="BGS UAE">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#manifesto">About</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#tours">Tours</a></li>
+      <li><a href="#join" class="nav-cta">Join</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO — text only, no logo in spotlight ── -->
+  <section class="parallax-section" id="hero">
+    <div class="parallax-bg" data-parallax="0.4"></div>
+    <div class="hero-content">
+      <p class="hero-pretitle">United Arab Emirates · Est. 2020</p>
+      <h1 class="hero-heading">Bogey Golf Society</h1>
+      <p class="hero-sub-heading">United Arab Emirates</p>
+      <p class="hero-tagline-small">Golf for vibes. Competition for lore.</p>
+      <div class="hero-actions">
+        <a href="#join" class="btn btn-green">Join the Society</a>
+        <a href="#events" class="btn btn-ghost">View Events</a>
+      </div>
+    </div>
+    <div class="scroll-cue">
+      <div class="scroll-cue-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- ── MANIFESTO ── -->
+  <section id="manifesto">
+    <div class="manifesto-inner">
+      <div class="manifesto-left reveal">
+        <div class="big-number">BGS</div>
+      </div>
+      <div class="manifesto-right">
+        <p class="section-label reveal">Who We Are</p>
+        <blockquote class="manifesto-quote reveal reveal-delay-1">
+          "Birdies are unicorns. Three-putts are tradition."
+        </blockquote>
+        <p class="manifesto-body reveal reveal-delay-2">
+          Bogey Golf Society is a wildly confident, proudly inclusive crew who treat birdies like unicorns and three-putts like tradition. We play for vibes, questionable swing advice, and just enough "competition" to justify monthly medals, Opens throughout the year, and annual trips that become lore.
+        </p>
+        <br>
+        <p class="manifesto-body reveal reveal-delay-3">
+          Come for the golf… stay for the banter, the camaraderie, and the perfectly unnecessary seriousness we bring to a very unnecessary game.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DIVIDER 1 — "The Philosophy" — image 1 (logo on black) ── -->
+  <div class="parallax-section parallax-divider" id="divider-1">
+    <div class="parallax-bg" data-parallax="0.35"></div>
+    <div class="parallax-divider-content">
+      <div class="divider-quote reveal">
+        <em>The Philosophy</em>
+        "Just enough competition to justify a post-round debrief."
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <section id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal"><div class="stat-num">4+</div><div class="stat-label">Years Running</div></div>
+      <div class="stat-item reveal reveal-delay-1"><div class="stat-num">40+</div><div class="stat-label">Members</div></div>
+      <div class="stat-item reveal reveal-delay-2"><div class="stat-num">12</div><div class="stat-label">Annual Events</div></div>
+      <div class="stat-item reveal reveal-delay-3"><div class="stat-num">4</div><div class="stat-label">International Tours</div></div>
+    </div>
+  </section>
+
+  <!-- ── EVENTS ── -->
+  <section id="events">
+    <div class="events-inner">
+      <div>
+        <p class="section-label reveal">On the Card</p>
+        <h2 class="display reveal reveal-delay-1">Upcoming <em>fixtures</em></h2>
+        <div class="events-list">
+          <div class="event-row reveal">
+            <div><div class="event-date-num">16</div><div class="event-date-mo">May</div></div>
+            <div class="event-info"><h4>Türkiye Tour 2026</h4><p>Antalya · 4-day tournament, three formats</p><span class="event-tag tour">International Tour</span></div>
+          </div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">07</div><div class="event-date-mo">Jun</div></div>
+            <div class="event-info"><h4>Monthly Medal — Emirates GC</h4><p>The Majlis, Dubai · Stroke play · 07:30</p><span class="event-tag">Monthly Medal</span></div>
+          </div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">05</div><div class="event-date-mo">Jul</div></div>
+            <div class="event-info"><h4>Summer Stableford — Yas Links</h4><p>Abu Dhabi · Early tee times from 06:00</p><span class="event-tag">Monthly Round</span></div>
+          </div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">02</div><div class="event-date-mo">Aug</div></div>
+            <div class="event-info"><h4>Twilight Round — Dubai Hills</h4><p>Fourball format · Tee off 17:00</p><span class="event-tag">Monthly Round</span></div>
+          </div>
+          <div class="event-row reveal">
+            <div><div class="event-date-num">TBC</div><div class="event-date-mo">Oct</div></div>
+            <div class="event-info"><h4>BGS Open 2026</h4><p>Annual open — venue TBC · All members eligible</p><span class="event-tag tour">Open Event</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:3rem;" class="reveal">
+          <p class="section-label">Register for an Event</p>
+          <form name="event-signup" method="POST" data-netlify="true" action="" style="margin-top:1.5rem;">
+            <input type="hidden" name="form-name" value="event-signup">
+            <div class="form-group"><label class="form-lbl" for="ev-name">Name</label><input type="text" id="ev-name" name="name" class="form-field" placeholder="Your full name" required></div>
+            <div class="form-group"><label class="form-lbl" for="ev-email">Email</label><input type="email" id="ev-email" name="email" class="form-field" placeholder="your@email.com" required></div>
+            <div class="form-group">
+              <label class="form-lbl" for="ev-select">Event</label>
+              <div class="select-wrap">
+                <select id="ev-select" name="event" class="form-field" required>
+                  <option value="" disabled selected>Select an event</option>
+                  <option>Türkiye Tour 2026 — 16 May</option>
+                  <option>Monthly Medal — Emirates GC — 7 Jun</option>
+                  <option>Summer Stableford — Yas Links — 5 Jul</option>
+                  <option>Twilight Round — Dubai Hills — 2 Aug</option>
+                  <option>BGS Open 2026 — Oct TBC</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-submit-main" style="margin-top:0.5rem;">Register Interest →</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <p class="section-label">Full Schedule</p>
+        <h2 class="display" style="margin-bottom:1.5rem;">Live <em>calendar</em></h2>
+        <div class="calendar-block">
+          <div class="cal-header"><div class="cal-header-dot"></div><span>BGS Events Calendar — Live</span></div>
+          <iframe src="https://calendar.google.com/calendar/embed?src=bogeygolfuae%40gmail.com&ctz=Asia%2FDubai" style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DIVIDER 2 — "Annual Tours" — image 6 (Thailand group on water hole) ── -->
+  <div class="parallax-section parallax-divider" id="divider-2">
+    <div class="parallax-bg" data-parallax="0.35"></div>
+    <div class="parallax-divider-content">
+      <div class="divider-quote reveal">
+        <em>Annual Tours</em>
+        "Every year, a new destination.<br>Every trip, a new chapter."
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOURS — 4 equal columns ── -->
+  <section id="tours">
+    <div class="tours-header">
+      <p class="section-label" style="color:rgba(255,255,255,0.35);">
+        <span style="background:rgba(255,255,255,0.2);display:inline-block;width:28px;height:1px;vertical-align:middle;margin-right:0.8rem;"></span>
+        International Tours
+      </p>
+      <h2 class="display light reveal reveal-delay-1">Every year,<br><em>a new adventure</em></h2>
+    </div>
+
+    <div class="tours-grid">
+
+      <!-- THAILAND 2024 — card image = image 3 (group on tee) — HAS POPUP -->
+      <div class="tour-card clickable reveal" onclick="openModal('thailand')">
+        <img src="img_thailand_card.jpg" alt="Thailand 2024">
+        <div class="tour-card-info">
+          <div class="tour-year-tag">2024 · Completed</div>
+          <div class="tour-card-name">Thailand</div>
+          <div class="tour-card-sub">Phuket</div>
+          <div class="tour-action">View Tour ↗</div>
+        </div>
+      </div>
+
+      <!-- PORTUGAL 2025 — card image = image 7 (St Andrews sunset per brief) — HAS POPUP -->
+      <div class="tour-card clickable reveal reveal-delay-1" onclick="openModal('portugal')">
+        <img src="img_portugal_card.png" alt="Portugal 2025">
+        <div class="tour-card-info">
+          <div class="tour-year-tag">2025 · Completed</div>
+          <div class="tour-card-name">Portugal</div>
+          <div class="tour-card-sub">Algarve</div>
+          <div class="tour-action">View Tour ↗</div>
+        </div>
+      </div>
+
+      <!-- TÜRKIYE 2026 — image 8 (Gloria pines) — NO POPUP -->
+      <div class="tour-card no-click reveal reveal-delay-2">
+        <img src="img_turkiye.jpg" alt="Türkiye 2026">
+        <div class="tour-card-info">
+          <div class="tour-year-tag">2026</div>
+          <div class="tour-card-name">Türkiye</div>
+          <div class="tour-card-sub">Antalya</div>
+          <div class="tour-action">Upcoming, May '26</div>
+        </div>
+      </div>
+
+      <!-- SCOTLAND 2027 — image 9 (coastal dunes) — NO POPUP -->
+      <div class="tour-card no-click reveal reveal-delay-3">
+        <img src="img_scotland_card.png" alt="Scotland 2027">
+        <div class="tour-card-info">
+          <div class="tour-year-tag">2027</div>
+          <div class="tour-card-name">Scotland</div>
+          <div class="tour-card-sub">St. Andrews &amp; East Coast</div>
+          <div class="tour-action">Planned, May '27</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── DIVIDER 3 — "Membership" — image 4 (van of golfers) ── -->
+  <div class="parallax-section parallax-divider" id="divider-3">
+    <div class="parallax-bg" data-parallax="0.35"></div>
+    <div class="parallax-divider-content">
+      <div class="divider-quote reveal">
+        <em>Membership</em>
+        "Inclusive. A society that takes a very silly game<br>very seriously."
+      </div>
+    </div>
+  </div>
+
+  <!-- ── JOIN ── -->
+  <section id="join">
+    <div class="join-inner">
+      <div>
+        <p class="section-label reveal">Apply Now</p>
+        <h2 class="display reveal reveal-delay-1">Join the <em>Society</em></h2>
+        <p class="body-text reveal reveal-delay-2" style="margin-top:1.2rem;">
+          BGS membership is by application. We're a members-only society — small enough that everyone knows your name, large enough for a proper competition.
+        </p>
+        <div class="join-perks">
+          <div class="perk reveal"><div class="perk-icon">⛳</div><div><h4>Monthly Rounds</h4><p>Access to all BGS events at the UAE's finest courses.</p></div></div>
+          <div class="perk reveal reveal-delay-1"><div class="perk-icon">✈️</div><div><h4>Annual International Tour</h4><p>Priority access to the yearly BGS tour. Four tours and counting.</p></div></div>
+          <div class="perk reveal reveal-delay-2"><div class="perk-icon">🏆</div><div><h4>Proper Competition</h4><p>Handicap-based formats where every golfer stays in the game.</p></div></div>
+          <div class="perk reveal reveal-delay-3"><div class="perk-icon">👕</div><div><h4>Exclusive Merchandise</h4><p>Annual bespoke BGS gear. Tour jackets, wallets, the works.</p></div></div>
+        </div>
+      </div>
+
+      <div class="join-form-wrap reveal reveal-delay-2">
+        <form name="membership" method="POST" data-netlify="true" action="">
+          <input type="hidden" name="form-name" value="membership">
+          <div class="form-row-2">
+            <div class="form-group"><label class="form-lbl" for="f-first">First Name</label><input type="text" id="f-first" name="first_name" class="form-field" placeholder="James" required></div>
+            <div class="form-group"><label class="form-lbl" for="f-last">Last Name</label><input type="text" id="f-last" name="last_name" class="form-field" placeholder="Smith" required></div>
+          </div>
+          <div class="form-group"><label class="form-lbl" for="f-email">Email Address</label><input type="email" id="f-email" name="email" class="form-field" placeholder="james@email.com" required></div>
+          <div class="form-group"><label class="form-lbl" for="f-phone">Phone Number</label><input type="tel" id="f-phone" name="phone" class="form-field" placeholder="+971 50 000 0000" required></div>
+          <div class="form-group"><label class="form-lbl" for="f-hcap">Handicap Index</label><input type="number" id="f-hcap" name="handicap" class="form-field" placeholder="e.g. 18.4" step="0.1" min="0" max="54" required></div>
+          <div class="form-group">
+            <label class="form-lbl" for="f-how">How did you hear about us?</label>
+            <div class="select-wrap">
+              <select id="f-how" name="how_heard" class="form-field">
+                <option value="" disabled selected>Select one</option>
+                <option>Referred by a member</option>
+                <option>Social media</option>
+                <option>Google / web search</option>
+                <option>Met someone at a course</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-lbl" for="f-msg">Anything else? (optional)</label><textarea id="f-msg" name="message" class="form-field" placeholder="Tell us about your golf background..."></textarea></div>
+          <div class="form-check"><input type="checkbox" id="f-consent" name="consent" required><label for="f-consent">I understand membership is subject to committee approval. I'll hear back within 5 working days.</label></div>
+          <button type="submit" class="btn-submit-main">Submit Application →</button>
+          <p class="form-note">Details shared only with the BGS committee.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER — PNG logo ── -->
+  <footer>
+    <p>© 2026 The Bogey Golf Society — United Arab Emirates. Come for the golf.</p>
+    <ul class="footer-links">
+      <li><a href="#manifesto">About</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#tours">Tours</a></li>
+      <li><a href="#join">Join</a></li>
+    </ul>
+  </footer>
+
+  <!-- ── MODALS — only Thailand and Portugal ── -->
+
+  <!-- THAILAND POPUP
+       Hero: image 3 (img_portugal_group.jpg — the Portugal group is actually our Thailand hero, mapping to upload 3)
+       Gallery order: 10, 11, 12 → img_thailand_popup1, img_thailand_popup2, img_thailand_popup3
+       No "Course" meta field
+  -->
+  <div class="tour-modal" id="modal-thailand">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('thailand')">✕</button>
+      <img class="modal-img" src="img_thailand_card.jpg" alt="Thailand Tour">
+      <div class="modal-content">
+        <div class="modal-meta">
+          <div><div class="meta-lbl">Destination</div><div class="meta-val">Thailand</div></div>
+          <div><div class="meta-lbl">Year</div><div class="meta-val">2024</div></div>
+          <div><div class="meta-lbl">Status</div><div class="meta-val">Completed</div></div>
+        </div>
+        <h2>Thailand Tour <em>'24</em></h2>
+        <p>Lush tropical courses, impeccable service, and one or two moments that won't be repeated in polite company. The heat was relentless. The banter was considerably worse.</p>
+        <p>A society trip that firmly set the bar for everything that followed.</p>
+        <div class="modal-gallery">
+          <img src="img_popup_10.png" alt="">
+          <img src="img_popup_11.png" alt="">
+          <img src="img_popup_12.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTUGAL POPUP
+       Hero: image 7 (img_scotland.png — St Andrews — wait, image 7 = Scotland. Let me re-check the uploads.
+       Per the brief: Portugal Hero = image 7. Image 7 = img_scotland.png (the St Andrews sunset photo uploaded as 7.png)
+       Gallery order: 2, 13, 14 → img_portugal_teeshot (2), img_portugal_popup2 (13), img_portugal_popup3 (14)
+       No "Course" meta field
+  -->
+  <div class="tour-modal" id="modal-portugal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('portugal')">✕</button>
+      <img class="modal-img" src="img_portugal_card.png" alt="Portugal Tour">
+      <div class="modal-content">
+        <div class="modal-meta">
+          <div><div class="meta-lbl">Destination</div><div class="meta-val">Algarve, Portugal</div></div>
+          <div><div class="meta-lbl">Year</div><div class="meta-val">2025</div></div>
+          <div><div class="meta-lbl">Status</div><div class="meta-val">Completed</div></div>
+        </div>
+        <h2>Portugal Tour <em>'25</em></h2>
+        <p>Golden fairways, Atlantic cliffs, and post-round dinners in the Old Town. The 19th hole proved, once again, that the real competition happens off the course.</p>
+        <p>A trip that delivered in every possible way — on the fairways and emphatically off them.</p>
+        <div class="modal-gallery">
+          <img src="img_popup_2.png" alt="">
+          <img src="img_popup_13.png" alt="">
+          <img src="img_popup_14.png" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCRIPTS ── -->
+  <script>
+    // CUSTOM CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
+    (function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+    document.querySelectorAll('a,button,.tour-card.clickable').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ cursor.style.width='18px'; cursor.style.height='18px'; ring.style.width='52px'; ring.style.height='52px'; });
+      el.addEventListener('mouseleave',()=>{ cursor.style.width='10px'; cursor.style.height='10px'; ring.style.width='36px'; ring.style.height='36px'; });
+    });
+
+    // NAV SCROLL
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', ()=> nav.classList.toggle('solid', window.scrollY > 80), {passive:true});
+
+    // PARALLAX
+    const pEls = document.querySelectorAll('[data-parallax]');
+    function doParallax(){
+      pEls.forEach(el=>{
+        const rect = el.parentElement.getBoundingClientRect();
+        const speed = parseFloat(el.dataset.parallax);
+        const offset = (rect.top + rect.height/2 - window.innerHeight/2) * speed;
+        el.style.transform = `translateY(${offset}px)`;
+      });
+    }
+    window.addEventListener('scroll', doParallax, {passive:true});
+    doParallax();
+
+    // SCROLL REVEAL
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, {threshold:0.12});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // MODALS — only Thailand and Portugal
+    function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); document.body.style.overflow=''; }
+    document.querySelectorAll('.tour-modal').forEach(m=>{
+      m.addEventListener('click', e=>{ if(e.target===m) closeModal(m.id.replace('modal-','')); });
+    });
+    document.addEventListener('keydown', e=>{
+      if(e.key==='Escape') document.querySelectorAll('.tour-modal.open').forEach(m=>closeModal(m.id.replace('modal-','')));
+    });
+  </script>
+
+</body>
+</html>
